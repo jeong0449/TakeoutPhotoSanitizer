@@ -129,6 +129,6 @@ Google Takeout을 통해 Google 포토 데이터를 일괄 다운로드하면 �
 
 ## License
 
-(Choose your license here --- e.g., MIT / CC0 / Custom)
+MIT License.
 
 ------------------------------------------------------------------------
