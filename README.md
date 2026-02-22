@@ -68,6 +68,83 @@ author.
 
 ------------------------------------------------------------------------
 
+## Usage
+
+### Requirements
+
+-   Windows 10 / 11
+-   Windows PowerShell 5.1 (recommended)\
+    *(PowerShell 7.x also supported on Windows)*
+-   Sufficient free disk space (recommended ≥ 25 GB)
+
+You can check your PowerShell version:
+
+``` powershell
+$PSVersionTable.PSVersion
+```
+
+PowerShell 5.1 example output:
+
+    Major  Minor  Build  Revision
+    -----  -----  -----  --------
+    5      1      22621  2506
+
+------------------------------------------------------------------------
+
+### How to Run
+
+1.  Open **Windows PowerShell 5.1**\
+    (Press `Win + R` → type `powershell` → Enter)
+
+2.  Navigate to the repository folder:
+
+``` powershell
+cd C:\Users\jeong\Projects\TakeoutPhotoSanitizer
+```
+
+3.  Allow script execution for the current session:
+
+``` powershell
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+```
+
+4.  Run the sanitizer:
+
+``` powershell
+.\TakeoutPhotoSanitizer.ps1 `
+  -ZipDir "C:\Users\jeong\Projects\TakeoutPhotoSanitizer\Takeout_Zip" `
+  -DestRoot "C:\Users\jeong\Projects\TakeoutPhotoSanitizer\Photos_Backup\From_Google_Takeout" `
+  -BatchSize 2 `
+  -MinFreeGB 25 `
+  -ReportSidecars
+```
+
+------------------------------------------------------------------------
+
+### Parameters
+
+  Parameter           Description
+  ------------------- ------------------------------------------------
+  `-ZipDir`           Folder containing Google Takeout ZIP files
+  `-DestRoot`         Destination root folder for normalized archive
+  `-BatchSize`        Number of ZIP files processed per batch
+  `-MinFreeGB`        Minimum required free disk space
+  `-ReportSidecars`   Optional reporting of JSON sidecars
+
+------------------------------------------------------------------------
+
+### Notes
+
+-   `_work` folders are temporary and removed automatically.
+-   ZIP files are moved to `_processed` (or deleted if configured).
+-   `_Uncertain` contains files that could not be confidently
+    classified.
+
+------------------------------------------------------------------------
+
+
+------------------------------------------------------------------------
+
 # 🇰🇷 한국어 설명
 
 ## 왜 이 프로젝트가 필요한가
