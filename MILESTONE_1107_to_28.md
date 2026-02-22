@@ -22,7 +22,7 @@ behavior to a reliability-driven metadata normalization engine.
 
 ## Initial Problem State
 
-During early batch runs of Google Takeout ZIP archives:
+During early batch runs of Google Takeout ZIP archives (using two ZIP files for testing):
 
 -   `_Uncertain` folder contained **1107 media files**
 -   Many JPEG files had valid EXIF metadata
