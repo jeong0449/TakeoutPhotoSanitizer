@@ -3,6 +3,9 @@
 Version 1.0.0\
 Last Updated: 2026-02-22
 
+<p align="center">
+  <img src="images/TakeoutPhotoSanitizer.png" width="480" alt="TakeoutPhotoSanitizer">
+</p>
 ------------------------------------------------------------------------
 
 # 🇺🇸 English Description
