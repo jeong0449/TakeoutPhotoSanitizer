@@ -72,7 +72,7 @@ recommended.
 
 `TakeoutPhotoSanitizer.ps1` works in:
 
--   Windows PowerShell 5.1\
+-   Windows PowerShell 5.1
 -   PowerShell 7.x
 
 However, for best stability, encoding consistency, and performance, the
