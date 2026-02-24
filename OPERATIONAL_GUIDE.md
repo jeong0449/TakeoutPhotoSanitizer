@@ -87,8 +87,6 @@ After all ZIP files have been processed:
 1.  Ensure no script is running
 2.  Optionally create a snapshot:
 
-```{=html}
-<!-- -->
 ```
     Copy-Item _hash_db\sha256_db.tsv _hash_db\sha256_db.final.tsv
 
