@@ -2,8 +2,7 @@
 
 This document explains how TakeoutPhotoSanitizer resolves multiple JSON
 sidecars, determines media year classification, and handles files that
-fall into the `_Uncertain` category --- including the special
-`_Uncertain/<year>_suspects` folder.
+fall into uncertainty categories.
 
 <p align="center">
   <img src="../images/ClassificationDiagram.png" width="480" alt="Decision Flow Diagram">
@@ -19,94 +18,62 @@ Google Takeout often produces inconsistent sidecar metadata:
 -   JSON filenames may not exactly match the media filename
 -   `.supplemental-metadata.json` and plain `.json` may coexist
 -   Duplicate media (same SHA-256) may appear across different albums
-    with different metadata
 
-TakeoutPhotoSanitizer uses a practical recovery strategy instead of
-attempting full JSON merging.
+The script follows a priority-based recovery strategy rather than full
+JSON merging.
 
 ### 1.1 JSON Discovery Order
 
-For each media file, the script searches for candidate JSON sidecars in
-the following priority:
+For each media file, candidate JSON sidecars are searched in this order:
 
 1.  `<media>.supplemental-metadata.json`
 2.  `<media>.json`
 3.  `<mediaBaseName>.supplemental-metadata.json`
 4.  `<mediaBaseName>.json`
-5.  Title-based matching fallback
+5.  Title-based fallback matching
 
-If direct filename matching fails, the script scans JSON files in the
-same directory and compares the `title` field to the normalized media
-filename.
-
-Normalization includes:
+Filename normalization includes:
 
 -   Unicode normalization (Form C)
 -   Removal of duplicate suffixes like `__1`, `__2`
 -   Case-insensitive comparison
 
-If a match is found, the JSON is copied and aligned to the media file.
-
 ------------------------------------------------------------------------
 
 ### 1.2 Folder-Level JSON Caching
 
-For year classification, the script scans JSON files once per folder and
-builds two maps:
+The script scans JSON files once per folder and builds maps using:
 
--   `photoTakenTime.timestamp` → preferred year source
--   `creationTime.timestamp` → fallback year source
+-   `photoTakenTime.timestamp` (primary source)
+-   `creationTime.timestamp` (secondary source)
 
-Keys are normalized to handle:
-
--   `.supplemental-metadata` suffixes
--   Extension vs non-extension base names
-
-If multiple JSON files map to the same key, the last processed entry
-overwrites earlier ones. Duplicate handling (below) mitigates metadata
-loss.
+Duplicate handling uses a metadata scoring model to retain the
+highest-quality JSON.
 
 ------------------------------------------------------------------------
 
-### 1.3 Duplicate Media With Different JSON
+## 2. Year Resolution Priority
 
-If the same media appears multiple times:
-
--   Only one physical copy is retained
--   JSON quality is compared
-
-A metadata score is computed:
-
--   `photoTakenTime.timestamp` → +100
--   `creationTime.timestamp` → +60
--   Valid GPS (non-zero) → +30
--   Non-empty description → +10
--   Favorite flag → +5
--   People tag present → +5
-
-The highest-scoring JSON is retained next to the representative media
-file.
-
-Full JSON merging is intentionally avoided to preserve source integrity.
-
-------------------------------------------------------------------------
-
-## 2. What Media Files Go to `_Uncertain`?
-
-A file is moved to `_Uncertain` when the capture year cannot be
-determined reliably.
-
-Year resolution priority:
+Year classification follows strict priority:
 
 1.  JSON `photoTakenTime.timestamp`
 2.  JSON `creationTime.timestamp`
-3.  EXIF DateTimeOriginal (JPEG)
-4.  Filename pattern parsing (YYYY-MM-DD)
+3.  EXIF DateTimeOriginal
+4.  Filename pattern parsing
 5.  Unix epoch interpretation
 
-If all methods fail, the file is classified as unresolved.
+If all methods fail, the file is treated as unresolved.
 
-Typical causes:
+------------------------------------------------------------------------
+
+## 3. `_Uncertain` Folder
+
+### Definition
+
+The `_Uncertain` folder contains media files for which no reliable
+capture year could be determined using the defined resolution priority.
+
+### Causes
 
 -   Missing JSON
 -   Corrupted EXIF
@@ -114,47 +81,88 @@ Typical causes:
 -   Generated or edited images
 -   Metadata stripped by external tools
 
-------------------------------------------------------------------------
+Files in `_Uncertain` are explicitly marked as unresolved and require
+manual review.
 
-## 3. Meaning of `_Uncertain/<year>_suspects`
-
-This folder contains files classified into the current runtime year via
-fallback logic, but considered suspicious.
-
-Fallback contamination may result from:
-
--   File system timestamps (LastWriteTime)
--   Extraction time metadata
--   Misinterpreted epoch values
--   Incorrect JSON precedence
-
-Instead of silently misclassifying into the current year, the script
-isolates them in:
-
-`_Uncertain/<currentYear>_suspects/`
-
-This makes potential year pollution visible and reviewable.
+This is a metadata absence condition.
 
 ------------------------------------------------------------------------
 
-### 3.1 What Happens Next Year?
+## 4. `_Uncertain/<year>_suspects` Folder
 
-If the script runs in a new year and similar fallback occurs, the
-suspect folder name updates accordingly:
+This folder contains files that were temporarily assigned to the current
+runtime year via fallback logic, but are considered suspicious.
 
-`_Uncertain/2027_suspects/` (example)
+These files:
 
-This dynamic naming ensures transparency and prevents silent archive
-corruption.
+-   May have been influenced by file system timestamps
+-   May reflect ZIP extraction time
+-   May contain ambiguous epoch values
+
+Instead of silently placing them into a normal year folder, they are
+isolated inside:
+
+    _Uncertain/<currentYear>_suspects/
+
+This is a runtime contamination safeguard.
+
+It is different from `_Uncertain` because these files *do* have a
+derived year, but the derivation is considered unreliable.
 
 ------------------------------------------------------------------------
 
-## 4. Design Philosophy
+## 5. `FS_<year>` (Fallback Sorted) Folders
 
-TakeoutPhotoSanitizer follows three principles:
+### Definition
 
-1.  Preserve the best available metadata
-2.  Avoid silent misclassification
-3.  Make uncertainty explicit
+`FS_<year>` folders (e.g., `FS_2024`, `FS_2025`) contain files assigned
+to a year based solely on file system timestamps when no stronger
+metadata was available.
 
-When metadata cannot be trusted, it is surfaced --- not guessed.
+Typical sources:
+
+-   `LastWriteTime.Year`
+-   `CreationTime.Year`
+-   Extraction timestamps
+
+### Important Distinction
+
+Unlike `_Uncertain`, files in `FS_<year>` do have a derived year.
+
+Unlike `<year>/`, the year is heuristic and low-confidence.
+
+This is a fallback-based classification.
+
+------------------------------------------------------------------------
+
+## 6. Confidence Hierarchy
+
+  ---------------------------------------------------------------------------------
+  Folder Type                     Confidence Level                Meaning
+  ------------------------------- ------------------------------- -----------------
+  `<year>/`                       High                            Verified capture
+                                                                  year
+
+  `FS_<year>/`                    Medium-Low                      File
+                                                                  system--derived
+                                                                  year
+
+  `_Uncertain/`                   None                            No usable year
+                                                                  metadata
+
+  `_Uncertain/<year>_suspects/`   Contaminated                    Runtime fallback
+                                                                  year, flagged
+  ---------------------------------------------------------------------------------
+
+------------------------------------------------------------------------
+
+## 7. Archival Principle
+
+TakeoutPhotoSanitizer separates identity from interpretation:
+
+-   File bytes are immutable.
+-   SHA-256 defines identity.
+-   Year classification is metadata.
+-   Metadata confidence must remain explicit.
+
+Uncertainty is surfaced --- not hidden.
