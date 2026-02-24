@@ -13,7 +13,7 @@ reproducible results when processing large Google Takeout archives.
 
 This document outlines the compatibility considerations between:
 
--   Windows PowerShell 5.1\
+-   Windows PowerShell 5.1
 -   PowerShell 7.x (Core / Cross-platform)
 
 ------------------------------------------------------------------------
