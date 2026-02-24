@@ -30,9 +30,10 @@ Photos_Backup\
 ├─ From_Google_Takeout\
 │ ├─ 2019\
 │ ├─ 2020\
-│ └─ SHA-256.txt ← hash database └─ \_ops\
-├─ reclass\
-└─ notes\
+│ └─ SHA-256.txt ← hash database
+└─ _ops\
+     ├─ reclass\
+     └─ notes\
 
 Only operational and management files should be stored inside `_ops`.
 
