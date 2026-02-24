@@ -6,7 +6,7 @@ fall into the `_Uncertain` category --- including the special
 `_Uncertain/<year>_suspects` folder.
 
 <p align="center">
-  <img src="images/ClassificationDiagram.png" width="480" alt="Decision Flow Diagram">
+  <img src="../images/ClassificationDiagram.png" width="480" alt="Decision Flow Diagram">
 </p>
 
 ------------------------------------------------------------------------
