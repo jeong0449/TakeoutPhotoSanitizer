@@ -5,6 +5,10 @@ sidecars, determines media year classification, and handles files that
 fall into the `_Uncertain` category --- including the special
 `_Uncertain/<year>_suspects` folder.
 
+<p align="center">
+  <img src="images/ClassificationDiagram.png" width="480" alt="Decision Flow Diagram">
+</p>
+
 ------------------------------------------------------------------------
 
 ## 1. How Metadata Is Recovered When Multiple JSON Files Exist
