@@ -4,6 +4,8 @@ This document explains how TakeoutPhotoSanitizer resolves multiple JSON
 sidecars, determines media year classification, and handles files that
 fall into uncertainty categories.
 
+![Decision Flow Diagram](../images/Decision_Flow_Diagram.svg)
+
 <p align="center">
   <img src="../images/ClassificationDiagram.png" width="480" alt="Decision Flow Diagram">
 </p>
