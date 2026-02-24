@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900">
+  <defs>
+    <style><![CDATA[
+      .title { font: 700 44px "Segoe UI", Arial, sans-serif; fill:#1f2937; }
+      .subtitle { font: 700 32px "Segoe UI", Arial, sans-serif; fill:#1f2937; }
+      .label { font: 600 20px "Segoe UI", Arial, sans-serif; fill:#ffffff; }
+      .labelDark { font: 600 20px "Segoe UI", Arial, sans-serif; fill:#111827; }
+      .small { font: 500 16px "Segoe UI", Arial, sans-serif; fill:#111827; }
+      .boxBlue { fill:#2f5d9b; stroke:#1f3f6b; stroke-width:2; }
+      .boxGreen { fill:#2e7d32; stroke:#1b5e20; stroke-width:2; }
+      .boxRed { fill:#c0392b; stroke:#922b21; stroke-width:2; }
+      .boxGray { fill:#9aa0a6; stroke:#6b7280; stroke-width:2; }
+      .boxYellow { fill:#f4b400; stroke:#b38600; stroke-width:2; }
+      .diamond { fill:#e67e22; stroke:#b45309; stroke-width:2; }
+      .arrow { stroke:#374151; stroke-width:3; fill:none; marker-end:url(#arrowHead); }
+      .dashed { stroke-dasharray:8 8; }
+    ]]></style>
+    <marker id="arrowHead" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#374151"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect x="0" y="0" width="1600" height="900" fill="#ffffff"/>
+
+  <!-- Panel Titles -->
+  <text x="260" y="80" class="title" text-anchor="middle">Year Resolution Flow</text>
+  <text x="1140" y="80" class="title" text-anchor="middle">Uncertain Handling Flow</text>
+
+  <!-- Separator -->
+  <line x1="800" y1="120" x2="800" y2="850" stroke="#d1d5db" stroke-width="3" stroke-dasharray="8 10"/>
+
+  <!-- Left panel: Year Resolution Flow -->
+  <!-- Boxes and diamonds positions -->
+  <!-- Media File -->
+  <rect x="150" y="140" rx="12" ry="12" width="220" height="60" class="boxBlue"/>
+  <text x="260" y="178" class="label" text-anchor="middle">Media File</text>
+
+  <path d="M260 200 L260 230" class="arrow"/>
+
+  <!-- Find JSON -->
+  <rect x="150" y="230" rx="12" ry="12" width="220" height="60" class="boxBlue"/>
+  <text x="260" y="268" class="label" text-anchor="middle">Find JSON Sidecar</text>
+
+  <path d="M260 290 L260 320" class="arrow"/>
+
+  <!-- photoTakenTime? diamond -->
+  <polygon points="260,320 360,370 260,420 160,370" class="diamond"/>
+  <text x="260" y="368" class="label" text-anchor="middle">photoTakenTime</text>
+  <text x="260" y="392" class="label" text-anchor="middle">timestamp?</text>
+
+  <!-- Yes -> Use Taken Year -->
+  <path d="M360 370 L450 370" class="arrow"/>
+  <rect x="450" y="340" rx="12" ry="12" width="220" height="60" class="boxGreen"/>
+  <text x="560" y="378" class="label" text-anchor="middle">Use Taken Year</text>
+  <text x="400" y="360" class="small" text-anchor="middle">Yes</text>
+
+  <!-- No down -->
+  <path d="M260 420 L260 450" class="arrow"/>
+  <text x="235" y="445" class="small" text-anchor="end">No</text>
+
+  <!-- creationTime? diamond -->
+  <polygon points="260,450 360,500 260,550 160,500" class="diamond"/>
+  <text x="260" y="498" class="label" text-anchor="middle">creationTime</text>
+  <text x="260" y="522" class="label" text-anchor="middle">timestamp?</text>
+
+  <!-- Yes -> Use Creation Year -->
+  <path d="M360 500 L450 500" class="arrow"/>
+  <rect x="450" y="470" rx="12" ry="12" width="220" height="60" class="boxGreen"/>
+  <text x="560" y="508" class="label" text-anchor="middle">Use Creation Year</text>
+  <text x="400" y="490" class="small" text-anchor="middle">Yes</text>
+
+  <!-- No down -->
+  <path d="M260 550 L260 580" class="arrow"/>
+  <text x="235" y="575" class="small" text-anchor="end">No</text>
+
+  <!-- EXIF? diamond -->
+  <polygon points="260,580 360,630 260,680 160,630" class="diamond"/>
+  <text x="260" y="628" class="label" text-anchor="middle">EXIF</text>
+  <text x="260" y="652" class="label" text-anchor="middle">DateTimeOriginal?</text>
+
+  <!-- Yes -> Use EXIF Year -->
+  <path d="M360 630 L450 630" class="arrow"/>
+  <rect x="450" y="600" rx="12" ry="12" width="220" height="60" class="boxGreen"/>
+  <text x="560" y="638" class="label" text-anchor="middle">Use EXIF Year</text>
+  <text x="400" y="620" class="small" text-anchor="middle">Yes</text>
+
+  <!-- No down -->
+  <path d="M260 680 L260 710" class="arrow"/>
+  <text x="235" y="705" class="small" text-anchor="end">No</text>
+
+  <!-- Filename? diamond -->
+  <polygon points="260,710 360,760 260,810 160,760" class="diamond"/>
+  <text x="260" y="752" class="label" text-anchor="middle">Filename Year</text>
+  <text x="260" y="776" class="label" text-anchor="middle">pattern?</text>
+
+  <!-- Yes -> Use Filename Year -->
+  <path d="M360 760 L450 760" class="arrow"/>
+  <rect x="450" y="730" rx="12" ry="12" width="220" height="60" class="boxGreen"/>
+  <text x="560" y="768" class="label" text-anchor="middle">Use Filename Year</text>
+  <text x="400" y="750" class="small" text-anchor="middle">Yes</text>
+
+  <!-- No -> Move to _Uncertain -->
+  <path d="M260 810 L260 845" class="arrow"/>
+  <text x="235" y="835" class="small" text-anchor="end">No</text>
+  <rect x="150" y="845" rx="12" ry="12" width="220" height="60" class="boxRed"/>
+  <text x="260" y="882" class="label" text-anchor="middle">Move to _Uncertain/</text>
+
+  <!-- Right panel: Uncertain Handling Flow -->
+  <!-- Start: No reliable capture year -->
+  <rect x="940" y="140" rx="12" ry="12" width="400" height="70" class="boxRed"/>
+  <text x="1140" y="182" class="label" text-anchor="middle">No Reliable Capture Year</text>
+
+  <path d="M1140 210 L1140 245" class="arrow"/>
+
+  <!-- Check file system year -->
+  <rect x="940" y="245" rx="12" ry="12" width="400" height="70" class="boxBlue"/>
+  <text x="1140" y="287" class="label" text-anchor="middle">Check File System Year</text>
+
+  <path d="M1140 315 L1140 345" class="arrow"/>
+
+  <!-- Reliable enough? diamond -->
+  <polygon points="1140,345 1290,415 1140,485 990,415" class="diamond"/>
+  <text x="1140" y="410" class="label" text-anchor="middle">File system year</text>
+  <text x="1140" y="435" class="label" text-anchor="middle">usable?</text>
+
+  <!-- Yes -> Move to FS_<year> -->
+  <path d="M1290 415 L1390 415" class="arrow"/>
+  <rect x="1390" y="380" rx="12" ry="12" width="190" height="70" class="boxYellow"/>
+  <text x="1485" y="422" class="labelDark" text-anchor="middle">Move to</text>
+  <text x="1485" y="446" class="labelDark" text-anchor="middle">FS_&lt;year&gt;/</text>
+  <text x="1335" y="405" class="small" text-anchor="middle">Yes</text>
+
+  <!-- No -> Move to _Uncertain -->
+  <path d="M1140 485 L1140 520" class="arrow"/>
+  <text x="1110" y="510" class="small" text-anchor="end">No</text>
+  <rect x="940" y="520" rx="12" ry="12" width="400" height="70" class="boxRed"/>
+  <text x="1140" y="562" class="label" text-anchor="middle">Move to _Uncertain/</text>
+
+  <path d="M1140 590 L1140 625" class="arrow"/>
+
+  <!-- Runtime contamination? diamond -->
+  <polygon points="1140,625 1290,695 1140,765 990,695" class="diamond"/>
+  <text x="1140" y="690" class="label" text-anchor="middle">Runtime fallback</text>
+  <text x="1140" y="715" class="label" text-anchor="middle">contamination?</text>
+
+  <!-- Yes -> Quarantine suspects -->
+  <path d="M1290 695 L1390 695" class="arrow"/>
+  <rect x="1390" y="655" rx="12" ry="12" width="190" height="80" class="boxGreen"/>
+  <text x="1485" y="690" class="label" text-anchor="middle">Quarantine</text>
+  <text x="1485" y="714" class="label" text-anchor="middle">_Uncertain/</text>
+  <text x="1485" y="738" class="label" text-anchor="middle">&lt;year&gt;_suspects/</text>
+  <text x="1335" y="685" class="small" text-anchor="middle">Yes</text>
+
+  <!-- No -> Remain unresolved -->
+  <path d="M1140 765 L1140 805" class="arrow"/>
+  <text x="1110" y="795" class="small" text-anchor="end">No</text>
+  <rect x="940" y="805" rx="12" ry="12" width="400" height="70" class="boxGray"/>
+  <text x="1140" y="847" class="label" text-anchor="middle">Remain in _Uncertain/</text>
+</svg>
