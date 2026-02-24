@@ -6,10 +6,6 @@ fall into uncertainty categories.
 
 ![Decision Flow Diagram](../images/Decision_Flow_Diagram.svg)
 
-<p align="center">
-  <img src="../images/ClassificationDiagram.png" width="480" alt="Decision Flow Diagram">
-</p>
-
 ------------------------------------------------------------------------
 
 ## 1. How Metadata Is Recovered When Multiple JSON Files Exist
